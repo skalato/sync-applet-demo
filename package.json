@@ -1,0 +1,76 @@
+{
+  "name": "sync-video-demo",
+  "version": "0.1.0",
+  "author": "",
+  "main": "dist/index.html",
+  "scripts": {
+    "prepare": "npm run clean && npm run build",
+    "upload": "sos applet upload",
+    "clean": "npx rimraf dist",
+    "escheck": "npx es-check@9.4.0 --module es5 \"./dist/**/*.js\"",
+    "postbuild": "npm run escheck",
+    "start": "webpack serve --mode development",
+    "build": "webpack --mode production",
+    "connect": "echo \"Deprecated command \\\"npm run connect\\\". Use \\\"npm run watch\\\" instead.\" && npm run watch",
+    "watch": "webpack --watch"
+  },
+  "files": [
+    "dist",
+    "CHANGELOG.md",
+    "README.md"
+  ],
+  "description": "signageOS applet",
+  "repository": {},
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "@babel/core": "^7.29.0",
+    "@babel/preset-env": "^7.29.5",
+    "@signageos/front-applet": "^8.7.0",
+    "@signageos/front-display": "^14.38.0",
+    "@signageos/webpack-plugin": "^1.1.1",
+    "babel-loader": "^10.1.1",
+    "core-js": "^3.49.0",
+    "css-loader": "^7.1.4",
+    "es-check": "^9.4.0",
+    "html-webpack-plugin": "^5.6.7",
+    "style-loader": "^4.0.0",
+    "webpack": "^5.107.1",
+    "webpack-cli": "^6.0.1",
+    "webpack-dev-server": "^5.2.4"
+  },
+  "sos": {
+    "appletUid": "",
+    "config": [
+      {
+        "name": "sync_engine",
+        "valueType": "enum",
+        "list": ["sync-server", "p2p-local"],
+        "mandatory": true,
+        "description": "Synchronization engine. 'sync-server' uses the signageOS sync server (works across networks). 'p2p-local' uses peer-to-peer on the same LAN, no server required. Defaults to 'sync-server' if unset.",
+        "placeholder": "sync-server"
+      },
+      {
+        "name": "sync_group",
+        "valueType": "string",
+        "mandatory": true,
+        "description": "Name of the sync group. All devices sharing the same group name play in lockstep. Use distinct group names to run independent synchronized sets on the same account. Defaults to 'sync-video-demo' if unset.",
+        "placeholder": "sync-video-demo"
+      },
+      {
+        "name": "sync_server_uri",
+        "valueType": "url",
+        "mandatory": false,
+        "description": "Custom sync-server URI. Only used when sync_engine is 'sync-server'. Leave empty to use the default signageOS sync server.",
+        "placeholder": "wss://sync.example.com"
+      },
+      {
+        "name": "debugEnabled",
+        "valueType": "enum",
+        "list": ["true", "false"],
+        "mandatory": true,
+        "description": "Show the on-screen debug overlay (status badge + sos API call log). Set to 'false' for production. Defaults to 'true'.",
+        "placeholder": "true"
+      }
+    ]
+  }
+}
